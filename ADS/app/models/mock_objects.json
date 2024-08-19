@@ -1,0 +1,36 @@
+{ "cities":
+    [
+        {"title": "Tehran", "location": [51.3890, 35.6892]},
+        {"title": "Alborz", "location": [50.9391, 35.8400]},
+        {"title": "East Azerbaijan", "location": [46.2919, 38.0700]},
+        {"title": "West Azerbaijan", "location": [45.0728, 37.5553]},
+        {"title": "Ardabil", "location": [48.2933, 38.2498]},
+        {"title": "Isfahan", "location": [51.6804, 32.6613]},
+        {"title": "Fars", "location": [52.5837, 29.5918]},
+        {"title": "Kerman", "location": [57.0788, 30.2832]},
+        {"title": "Kermanshah", "location": [47.0650, 34.3142]},
+        {"title": "Razavi Khorasan", "location": [59.6062, 36.2970]},
+        {"title": "North Khorasan", "location": [57.1010, 37.4710]},
+        {"title": "South Khorasan", "location": [59.2211, 32.8663]},
+        {"title": "Khuzestan", "location": [48.6940, 31.3273]},
+        {"title": "Kohgiluyeh and Boyer-Ahmad", "location": [51.6052, 30.6509]},
+        {"title": "Gilan", "location": [49.5832, 37.2808]},
+        {"title": "Golestan", "location": [54.4480, 36.8431]},
+        {"title": "Lorestan", "location": [48.3988, 33.5818]},
+        {"title": "Mazandaran", "location": [53.0586, 36.5656]},
+        {"title": "Markazi", "location": [49.7010, 34.0800]},
+        {"title": "Hormozgan", "location": [56.2665, 27.1832]},
+        {"title": "Hamadan", "location": [48.5150, 34.7942]},
+        {"title": "Ilam", "location": [46.4227, 33.6375]},
+        {"title": "Qazvin", "location": [50.0041, 36.2688]},
+        {"title": "Qom", "location": [50.8764, 34.6401]},
+        {"title": "Sistan and Baluchestan", "location": [60.5821, 27.5299]},
+        {"title": "Semnan", "location": [54.4342, 35.2256]},
+        {"title": "Yazd", "location": [54.3569, 31.8974]},
+        {"title": "Zanjan", "location": [48.3988, 36.5018]},
+        {"title": "Chaharmahal and Bakhtiari", "location": [50.8456, 31.9616]},
+        {"title": "Bushehr", "location": [50.8331, 28.9220]},
+        {"title": "Kurdistan", "location": [50.8906, 34.6437]}
+
+    ]
+}
