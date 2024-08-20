@@ -5,8 +5,13 @@ from mongoengine import (
     GeoPointField,
     URLField
 )
+from ..config import config
+import os
 
-connect('AD')
+username = os.getenv('MONGO_USERNAME')
+password = os.getenv('MONGO_PASSWORD')
+
+connect('AD', username=username, password=password, authentication_source='admin')
 
 class Advertisement(Document):
     title = StringField(max_length=100, required=True)

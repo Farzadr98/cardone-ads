@@ -1,8 +1,8 @@
 
 # TODO:
+# a precise ip to location service is required
 # make urls for ad.py required
 # note: returning mongodb objects as response creates maximum recrussion depth error
-# error handling for funcs
 # note: it seems like that mongoengine puts lat first despite of documentation
 
 
