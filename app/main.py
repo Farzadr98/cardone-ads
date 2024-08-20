@@ -3,6 +3,7 @@
 # make urls for ad.py required
 # note: returning mongodb objects as response creates maximum recrussion depth error
 # error handling for funcs
+# note: it seems like that mongoengine puts lat first despite of documentation
 
 
 from decimal import Decimal
@@ -36,7 +37,9 @@ async def root(
         try:
             lat = float(lat)
             long = float(long)
-            point = [long, lat]
+
+            point = [lat, long] #document says long first, but tests say otherwise
+
             print("point here:", point)
             return await get_near_points(point)
         except ValueError as ve:
@@ -69,7 +72,7 @@ async def get_location_from_ip(ip_address):
         response = await send_get_request(url)
         if 'error' in response:
             return {"error": response['error']}
-        return [response.get('longitude'), response.get('latitude')]
+        return [response.get('latitude'), response.get('longitude')]
     
     except Exception as e:
         logging.error(f"Error fetching location from IP: {e}")
