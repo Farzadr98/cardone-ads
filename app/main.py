@@ -3,7 +3,8 @@
 # a precise ip to location service is required
 # make urls for ad.py required
 # note: returning mongodb objects as response creates maximum recrussion depth error
-# note: it seems like that mongoengine puts lat first despite of documentation
+# rate limiter
+# remove exceptions from return
 
 
 from decimal import Decimal
@@ -24,11 +25,6 @@ async def root(
             max_length=15,
             pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
         )] = None,
-        city: Annotated[Optional[str], Query(
-            min_length=3,
-            max_length=50,
-            pattern="^[A-Za-z\s]+$"
-        )] = None,
         long: Annotated[Optional[Decimal], Query()] = None,
         lat: Annotated[Optional[Decimal], Query()] = None
     ):
@@ -38,7 +34,7 @@ async def root(
             lat = float(lat)
             long = float(long)
 
-            point = [lat, long] #document says long first, but tests say otherwise
+            point = [long, lat]
 
             print("point here:", point)
             return await get_near_points(point)
@@ -49,9 +45,13 @@ async def root(
         point = await get_location_from_ip(ip)
         return await get_near_points(point)
 
-    return {"status": "error", "message": "At least an ip address or longtitude and latitude are required."}
+    return await get_best_ads("nothing to look up on, recommending best ads")
 
 async def get_near_points(point):
+
+    if point == "outside range" or point == "no country detected":
+        return await get_best_ads(f"{point}, recommending best ads")
+
     try:
         objects = Advertisement.objects(location__near=point)
         
@@ -63,20 +63,31 @@ async def get_near_points(point):
     
     except Exception as e:
         logging.error(f"Error fetching nearby points: {e}")
-        return {"status": "error", "message": "Error fetching nearby points."}
+        return {"status": "error", "message": f"Error fetching nearby points: {e}"}
 
 
 async def get_location_from_ip(ip_address):
     try:
         url = f"http://ipwho.is/{ip_address}"
         response = await send_get_request(url)
-        if 'error' in response:
+        
+        if response.get('error'):
             return {"error": response['error']}
-        return [response.get('latitude'), response.get('longitude')]
+        
+        elif 'country' in response and response.get('country').strip().lower() != "iran":
+            return "outside range"
+
+        elif 'latitude' in response and 'longtitude' in response:
+            return [response.get('longitude'), response.get('latitude')]
+
+        else:
+            return "no country detected"
+        
     
     except Exception as e:
         logging.error(f"Error fetching location from IP: {e}")
         return {"error": str(e)}
+
 
 
 async def send_get_request(url):
@@ -95,5 +106,9 @@ async def send_get_request(url):
     except httpx.HTTPStatusError as e:
         logging.error(f"HTTP status error: {e}")
         return {"error": str(e)}
+
+
+async def get_best_ads(message):
+    return {"status": "success", "message": message}
 
 
